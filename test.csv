@@ -1,0 +1,5 @@
+,name,pull_date,completed_subscribers_count,subscribers_in_queue_count,sent,opens_count,unique_opens_count,clicks_count,unique_clicks_count,unsubscribes_count,spam_count,hard_bounces_count,soft_bounces_count,social_interactions_count,bounce_rate.float,click_to_open_rate.float,open_rate.float,open_rate.string,click_rate.float,click_rate.string,unsubscribe_rate.float,spam_rate.float,spam_rate.string,hard_bounce_rate.float,soft_bounce_rate.float,forward_rate.float,forward_rate.string,social_interaction_rate.float
+0,2023 Mobile Gaming Report,2023-03-20,2,0,2,1,,1,,0,0,0,0,,0.0,1.0,0.5,50%,0.5,50%,0,0,0%,0,0.0,0,0%,0
+1,Tag English website leads,2023-03-20,4,0,0,0,,0,,0,0,0,0,,0.0,0.0,0.0,0%,0.0,0%,0,0,0%,0,0.0,0,0%,0
+2,CreatorDB SaaS Signup,2023-03-20,0,8,12,4,,1,,0,0,0,1,,0.083333333333333,0.25,0.33333333333333,33.33%,0.083333333333333,8.33%,0,0,0%,0,0.08333333333333333,0,0%,0
+3,CreatorDB Newsletter Signup,2023-03-20,0,0,0,0,,0,,0,0,0,0,,0.0,0.0,0.0,0%,0.0,0%,0,0,0%,0,0.0,0,0%,0
