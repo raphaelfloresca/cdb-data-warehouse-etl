@@ -1,5 +1,12 @@
 from datetime import date
-from helpers import *
+import pandas as pd
+import sys
+
+# adding helpers folder to the system path
+sys.path.insert(0, '../../')
+
+from helpers.helpers import get_from_api
+
 
 # Main entry point for the cloud function
 def pull_from_api(self):

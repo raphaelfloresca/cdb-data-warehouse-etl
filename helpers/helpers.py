@@ -1,6 +1,7 @@
 import requests
 import urllib.parse
 
+
 # Get data from an API
 def get_from_api(url, headers, endpoint=None):
     request = requests.get(url, headers=headers)
