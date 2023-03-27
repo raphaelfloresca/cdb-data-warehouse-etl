@@ -1,10 +1,5 @@
 from datetime import date
 import pandas as pd
-import sys
-
-# adding helpers folder to the system path
-sys.path.insert(0, '../../')
-
 from helpers.helpers import get_from_api
 
 
@@ -22,19 +17,24 @@ def pull_from_api(self):
 
     # Get data from all automations
     automations_names = []
+    automations_ids = []
     automations_stats = []
 
     for data in automations_data:
         automations_names.append(data['name'])
+        automations_ids.append(data['id'])
         automations_stats.append(data['stats'])
 
     automations_names_series = pd.Series(automations_names)
+    automations_ids_series = pd.Series(automations_ids)
     df = pd.json_normalize(automations_stats)
     df['name'] = automations_names_series
+    df['id'] = automations_ids_series
     # All data pulled associated with the date of the API request - allows for partitioning later
     df["pull_date"] = pd.to_datetime(date.today())
 
-    cols = ['name',
+    cols = ['id',
+            'name',
             'pull_date',
             'completed_subscribers_count',
             'subscribers_in_queue_count',
@@ -51,22 +51,31 @@ def pull_from_api(self):
             'bounce_rate.float',
             'click_to_open_rate.float',
             'open_rate.float',
-            'open_rate.string',
             'click_rate.float',
-            'click_rate.string',
             'unsubscribe_rate.float',
             'spam_rate.float',
-            'spam_rate.string',
             'hard_bounce_rate.float',
             'soft_bounce_rate.float',
             'forward_rate.float',
-            'forward_rate.string',
             'social_interaction_rate.float']
 
     # Reordered columns
     df = df[cols]
 
+    # Rename columns
+    df = df.rename(columns={'bounce_rate.float': 'bounce_rate',
+                            'click_to_open_rate.float': 'click_to_open_rate',
+                            'open_rate.float': 'open_rate',
+                            'click_rate.float': 'click_rate',
+                            'unsubscribe_rate.float': 'unsubscribe_rate',
+                            'spam_rate.float': 'spam_rate',
+                            'hard_bounce_rate.float': 'hard_bounce_rate',
+                            'soft_bounce_rate.float': 'soft_bounce_rate',
+                            'forward_rate.float': 'forward_rate',
+                            'social_interaction_rate.float': 'social_interaction_rate'
+                            })
+
     # Write dataframe to csv
-    df.to_csv('test.csv', encoding='utf-8')
+    df.to_csv('mailerlite_automations.csv', encoding='utf-8')
 
     return "Data has been saved"

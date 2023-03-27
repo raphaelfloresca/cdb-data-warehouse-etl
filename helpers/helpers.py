@@ -161,3 +161,30 @@ def get_all_social_metadata(chunked_social_metadata):
             social_metadata_list.append(social_metadata_row)
 
     return social_metadata_list
+
+
+# Function to get readable seniority from seniority URI
+def sen_uri_to_en(data, uri):
+    sen_glossary = data['elements']
+
+    for item in sen_glossary:
+        if item['$URN'] == uri:
+            return item['name']['localized']['en_US']
+
+
+# Function to get readable industry from industry URI
+def industry_uri_to_en(data, uri):
+    glossary = data['elements']
+
+    for item in glossary:
+        if item['$URN'] == uri:
+            return item['name']['localized']['en_US']
+
+
+# Function to get readable function from function URI
+def function_uri_to_en(data, uri):
+    glossary = data['elements']
+
+    for item in glossary:
+        if item['$URN'] == uri:
+            return item['name']['localized']['en_US']
