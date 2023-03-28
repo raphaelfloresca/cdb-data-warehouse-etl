@@ -12,6 +12,22 @@ def get_from_api(url, headers, endpoint=None):
     return json
 
 
+def get_from_geo_api(url, headers, ids):
+    id_list = list(ids)
+    clean_ids = []
+
+    for geo_id in id_list:
+        clean_ids.append(geo_id.lstrip('urn:li:geo:'))
+
+    id_string = ','.join(clean_ids)
+    complete_url = url + id_string + ")"
+
+    request = requests.get(complete_url, headers=headers)
+    json = request.json()
+
+    return json
+
+
 # Filter out data without a particular key
 def filter_no_id(unfiltered_list, key_to_filter):
     return [item for item in unfiltered_list if key_to_filter in item]
@@ -188,3 +204,32 @@ def function_uri_to_en(data, uri):
     for item in glossary:
         if item['$URN'] == uri:
             return item['name']['localized']['en_US']
+
+
+# Function to get readable country from country URI
+def region_uri_to_en(data, uri):
+    glossary = data['elements']
+
+    for item in glossary:
+        if item['$URN'] == uri:
+            return item['name']['value']
+
+
+# Function to get readable country from country URI
+def country_uri_to_en(data, uri):
+    glossary = data['elements']
+
+    for item in glossary:
+        if item['$URN'] == uri:
+            return item['name']['value']
+
+
+# Function to get readable country from country URI
+def geo_uri_to_en(data, uri):
+    # print(uri)
+    glossary = data['results']
+    # print(glossary)
+
+    for geo in glossary.values():
+        if str(geo['id']) == uri:
+            return geo['defaultLocalizedName']['value']
