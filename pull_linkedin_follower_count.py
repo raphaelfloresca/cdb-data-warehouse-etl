@@ -25,16 +25,12 @@ def pull_from_api(self):
     # Reorder columns
     cols = ['pull_date',
             'firstDegreeSize']
-
     df = df[cols]
 
     # Rename columns
     old_col_names = ['firstDegreeSize']
     new_col_names = ['follower_count']
-
-    # Assign new column names
     new_cols = dict(zip(old_col_names, new_col_names))
-
     df = df.rename(columns=new_cols)
 
     # Write dataframe to csv

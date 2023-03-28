@@ -5,7 +5,7 @@ from helpers.helpers import *
 
 # Main entry point for the cloud country
 def pull_from_api(self):
-    # URL for page stats and
+    # URL for page stats and country
     page_stats_url = 'https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658'
     country_url = 'https://api.linkedin.com/v2/countries/'
 
