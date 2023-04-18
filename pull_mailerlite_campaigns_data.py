@@ -5,7 +5,6 @@ from helpers.helpers import get_from_api
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    # Start with first element
     campaigns_api_url = 'https://connect.mailerlite.com/api/campaigns?filter[status]=sent'
 
     headers = {
