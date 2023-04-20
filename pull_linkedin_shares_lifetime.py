@@ -8,12 +8,12 @@ def pull_from_api(self):
     # Fetch daily data from organization share API
     lifetime_share_url = "https://api.linkedin.com/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:30216658"
 
-    lifetime_share_headers = {
-        "Authorization": "Bearer AQU-ruNVnWde2coHnu5W0Yg6FBuFSJONyFurpmclnQQ4b4KR3kjFvt2SNAcjobZ-C-vMvAyL9rEHww8MYjWA0EVf7gCe5p7R2swy9_LCx_QZv2E1VBwoRbY9wKywFI2rKGFA0vt_klYbQjwtmzoDYLApejv6P0jt24GgY8MVCmyRlPrmApH55XSbrPDEwZk2u-GYettpDaQDsgz5IxmcVyLGEp9RdBMe5pDKm2kXAvx29Gk7IqJUCBWpEBBUiI3p8RAU46ttswyNkyA3ErCDWgxJC4W_-J4LEqORb3cjXdrJVTON-vn3poTnyfdc60WR__0KjjJJyBGdBjuZvL1IQiNrQvtuJA",
-        "Linkedin-Version": "202302"
+    headers = {
+        "Authorization": "Bearer {}".format(return_active_token()),
+        'Linkedin-Version': '202302'
     }
 
-    lifetime_share_request = requests.get(lifetime_share_url, headers=lifetime_share_headers)
+    lifetime_share_request = requests.get(lifetime_share_url, headers=headers)
     df = pd.json_normalize(lifetime_share_request.json()['elements'])
 
     # Get pull date
