@@ -1,0 +1,119 @@
+#+title: Facebook Token
+
+#+begin_src restclient
+GET https://graph.facebook.com/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=935822654435060&client_secret=544bd113d4bf54bdbdbade46ae2d77fb&fb_exchange_token=EAANTIDDj7vQBAP3PNByYA3fLTR1vkJKQVFVOZApzUEf7Dr6nPQWWmpRpGZCy2Jm5BYdq31BP3oa4GrX9awkI62RZATSyvZA8WO2QnGIDdZCwwssWZCdgWwM63xa91fDJsPuIZALIa2S80eOtgvl7fBcm1LHW74AZBX5w9cjWoFVU9WaKwkko69tgwGEkTaPaijBlOZCKk0FWeJWxBJgamkjYZC8yrlt4AKL2wZD
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "access_token": "EAANTIDDj7vQBAAPOkYpiFQqr81QSTaYeaa9Kn4IjnWJq5d8G3ZBy4KkHtXhW41m5t22DXWN8zJQKw3MrLoGVn2s6drM0iJUhH2EDJgVLSyQOkjfg0b7ViKcHe7kTp2NRe5XJ4iDoUmi9Vo7EyZBKOjLRRiCNhZC8e6CRQt2ybuFdbs7BNwP2sZAaRaNHlbAZD",
+  "token_type": "bearer"
+}
+// GET https://graph.facebook.com/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=935822654435060&client_secret=544bd113d4bf54bdbdbade46ae2d77fb&fb_exchange_token=EAANTIDDj7vQBAP3PNByYA3fLTR1vkJKQVFVOZApzUEf7Dr6nPQWWmpRpGZCy2Jm5BYdq31BP3oa4GrX9awkI62RZATSyvZA8WO2QnGIDdZCwwssWZCdgWwM63xa91fDJsPuIZALIa2S80eOtgvl7fBcm1LHW74AZBX5w9cjWoFVU9WaKwkko69tgwGEkTaPaijBlOZCKk0FWeJWxBJgamkjYZC8yrlt4AKL2wZD
+// HTTP/1.1 200 OK
+// Content-Type: application/json; charset=UTF-8
+// facebook-api-version: v16.0
+// Access-Control-Allow-Origin: *
+// Strict-Transport-Security: max-age=15552000; preload
+// Pragma: no-cache
+// Cache-Control: private, no-cache, no-store, must-revalidate
+// Expires: Sat, 01 Jan 2000 00:00:00 GMT
+// x-fb-request-id: Ad047tNp2nhkvp__2B89bfg
+// x-fb-trace-id: GbnP1DhZyRq
+// x-fb-rev: 1007365804
+// X-FB-Debug: L3C0uNpsZSuClZjaCfbRFALXubuwQ/gknuqFef2roBP7pJ14tOdwlsZGouNZkXVz2c8fNDZYWn8wXxpxHhhk4w==
+// Date: Mon, 24 Apr 2023 09:14:51 GMT
+// Alt-Svc: h3=":443"; ma=86400
+// Connection: keep-alive
+// Content-Length: 235
+// Request duration: 0.803957s
+#+END_SRC
+
+#+begin_src restclient
+GET https://graph.facebook.com/v16.0/3595399994022060/accounts?access_token=EAANTIDDj7vQBAAPOkYpiFQqr81QSTaYeaa9Kn4IjnWJq5d8G3ZBy4KkHtXhW41m5t22DXWN8zJQKw3MrLoGVn2s6drM0iJUhH2EDJgVLSyQOkjfg0b7ViKcHe7kTp2NRe5XJ4iDoUmi9Vo7EyZBKOjLRRiCNhZC8e6CRQt2ybuFdbs7BNwP2sZAaRaNHlbAZD
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "data": [
+    {
+      "access_token": "EAANTIDDj7vQBAIHCRSZCol18SZBBy8iBQreSCV3sZBfr8lNCIzxektCZBlVsby3wrnfx4YQYwuCY1bTPndF0YKsZCbetIr9CkhyOm3K8ucDgpaDZBGpymeZA8fx7ZAizI7pZCtigIJzBruVRzTt1MtsUf2K196KlQj7CzUJcopXP8q8K7dZCzLdlxZBANcOQoZBiXTf1wM7T2YHABgZDZD",
+      "category": "Internet marketing service",
+      "category_list": [
+        {
+          "id": "1706730532910578",
+          "name": "Internet marketing service"
+        }
+      ],
+      "name": "CreatorLabs",
+      "id": "102193902691841",
+      "tasks": [
+        "ADVERTISE",
+        "ANALYZE",
+        "CREATE_CONTENT",
+        "MESSAGING",
+        "MODERATE"
+      ]
+    },
+    {
+      "access_token": "EAANTIDDj7vQBAClnmtZC9GRfp0dNLujmswffPrJEfVXljK9edfaY5VX7R3p7loeIVsR6NZCpvH1FRAoilI6i4fOh5juyRPCkYaVTG4FTZBVSIk2I4hsQSRNPBtXF9lVYaP96N3YfKZBijHJhsMkJ16HMTAbX82dPcyEVOgWD070560AZCJCxrFkLh7oLDlWRMIP6TjuDujAZDZD",
+      "category": "Marketing agency",
+      "category_list": [
+        {
+          "id": "123377808095874",
+          "name": "Marketing agency"
+        },
+        {
+          "id": "1065597503495311",
+          "name": "Software company"
+        },
+        {
+          "id": "530553733821238",
+          "name": "Social media agency"
+        }
+      ],
+      "name": "Creator DB",
+      "id": "111695396916717",
+      "tasks": [
+        "ADVERTISE",
+        "ANALYZE",
+        "CREATE_CONTENT",
+        "MESSAGING",
+        "MODERATE"
+      ]
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "QVFIUjhleHhuSWFvYXFVb0hETWI2OHJqVmluWEJOMWk3SDRiVTNacnlyRklnd2J4eUU4c0lQV3AwWGJFc0xDWExLYzBKNGZAOaVZAVMTFnbXE5T3dGdnBKX29n",
+      "after": "QVFIUlVBVGVoem9fSlZAQdC1xX1dIdEJmLW82WnBoZAk5xOFJUbTVZATDRjZA19OSmh0b2xxM3JmM05WMUVMeDdqakZAzUnRlM1VaOGxBcGQwNTFtUlBsY0pKQnFR"
+    }
+  }
+}
+// GET https://graph.facebook.com/v16.0/3595399994022060/accounts?access_token=EAANTIDDj7vQBAAPOkYpiFQqr81QSTaYeaa9Kn4IjnWJq5d8G3ZBy4KkHtXhW41m5t22DXWN8zJQKw3MrLoGVn2s6drM0iJUhH2EDJgVLSyQOkjfg0b7ViKcHe7kTp2NRe5XJ4iDoUmi9Vo7EyZBKOjLRRiCNhZC8e6CRQt2ybuFdbs7BNwP2sZAaRaNHlbAZD
+// HTTP/1.1 200 OK
+// ETag: "0bf5b5d755b1fdb197fea177e2e83602019b50e9"
+// Content-Type: application/json; charset=UTF-8
+// Vary: Origin
+// Vary: Accept-Encoding
+// cross-origin-resource-policy: cross-origin
+// x-app-usage: {"call_count":2,"total_cputime":0,"total_time":0}
+// x-fb-rlafr: 0
+// Access-Control-Allow-Origin: *
+// facebook-api-version: v16.0
+// Strict-Transport-Security: max-age=15552000; preload
+// Pragma: no-cache
+// Cache-Control: private, no-cache, no-store, must-revalidate
+// Expires: Sat, 01 Jan 2000 00:00:00 GMT
+// x-fb-request-id: A24O5ZrnWsk1Nn4vAzlYTgp
+// x-fb-trace-id: A4ckZtmks2y
+// x-fb-rev: 1007365804
+// X-FB-Debug: hJn9SrBL+FaurhkjgmkXv2oemuLcs4hqA3Ge54HtSWgHfrcrckRMjE1PUHXC4QAk87Xj5SYMVLGvuheY2RqiAA==
+// Date: Mon, 24 Apr 2023 09:19:21 GMT
+// Alt-Svc: h3=":443"; ma=86400
+// Connection: keep-alive
+// Content-Length: 867
+// Request duration: 3.239502s
+#+END_SRC
