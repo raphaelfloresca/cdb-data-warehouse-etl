@@ -83,9 +83,13 @@ def pull_from_api(self):
     reels_df = pd.DataFrame(reels_list)
 
     # Write dataframe to csv
-    post_df.to_csv('ig_post_metrics.csv', encoding='utf-8')
-    album_df.to_csv('ig_album_metrics.csv', encoding='utf-8')
-    reels_df.to_csv('ig_reels_metrics.csv', encoding='utf-8')
-    story_df.to_csv('ig_story_metrics.csv', encoding='utf-8')
+    if not post_df.empty:
+        post_df.to_csv('ig_post_metrics.csv', encoding='utf-8')
+    if not album_df.empty:
+        album_df.to_csv('ig_album_metrics.csv', encoding='utf-8')
+    if not reels_df.empty:
+        reels_df.to_csv('ig_reels_metrics.csv', encoding='utf-8')
+    if not story_df.empty:
+        story_df.to_csv('ig_story_metrics.csv', encoding='utf-8')
 
     return "Data has been saved"
