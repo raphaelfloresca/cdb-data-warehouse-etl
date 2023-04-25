@@ -3,6 +3,32 @@ import urllib.parse
 from google.cloud import secretmanager
 
 
+def format_data_dict(raw_data):
+  data_dict = {}
+
+  for metric in raw_data:
+    data_dict[metric['name']] = metric['values'][0]['value']
+
+  return data_dict
+
+
+def format_action_breakdown_dict(raw_data):
+  breakdown_dict = {'bio_link_clicked': 0, 'call': 0, 'direction': 0, 'email': 0, 'other': 0, 'text': 0}
+
+  for breakdown in raw_data:
+    breakdown_dict[breakdown['dimension_values'][0]] = breakdown['value']
+
+  return breakdown_dict
+
+
+def format_navigation_breakdown_dict(raw_data):
+  breakdown_dict = {'automatic_forward': 0, 'tap_back': 0, 'tap_exit': 0, 'tap_forward': 0, 'swipe_back': 0, 'swipe_down': 0, 'swipe_forward': 0, 'swipe_up': 0}
+
+  for breakdown in raw_data:
+    breakdown_dict[breakdown['dimension_values'][0]] = breakdown['value']
+
+  return breakdown_dict
+
 def return_secret(project_id, secret_id, version_id="latest"):
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
@@ -43,44 +69,47 @@ def add_new_secret_version(project_id, secret_id, payload):
     )
 
 
-def return_active_token():
-    # Check if the token is current
-    check_token_url = "https://www.linkedin.com/oauth/v2/introspectToken"
-    check_token_headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    check_token_params = {
-        'client_id': '864qixr6v91kph',
-        'client_secret': return_secret('marketing-bd-379302', 'linkedin_api_client_secret'),
-        'token': return_secret('marketing-bd-379302', 'linkedin_api_access_token')
-    }
-    check_token_request = requests.post(check_token_url, headers=check_token_headers, data=check_token_params)
-    check_token_response = check_token_request.json()
-
-    # If token is not active, refresh token
-    if check_token_response['active'] != True:
-        refresh_url = 'https://www.linkedin.com/oauth/v2/accessToken'
-        refresh_headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        refresh_params = {
-            'grant_type': 'refresh_token',
-            'refresh_token': return_secret('marketing-bd-379302, linkedin_api_refresh_token'),
+def return_active_token(platform):
+    if platform == 'li':
+        # Check if the token is current
+        check_token_url = "https://www.linkedin.com/oauth/v2/introspectToken"
+        check_token_headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        check_token_params = {
             'client_id': '864qixr6v91kph',
-            'client_secret': return_secret('marketing-bd-379302', 'linkedin_api_client_secret')
+            'client_secret': return_secret('marketing-bd-379302', 'linkedin_api_client_secret'),
+            'token': return_secret('marketing-bd-379302', 'linkedin_api_access_token')
         }
-        refresh_request = requests.post(refresh_url, headers=refresh_headers, data=refresh_params)
-        refresh_response = refresh_request.json()
-        new_token = refresh_response['access_token']
+        check_token_request = requests.post(check_token_url, headers=check_token_headers, data=check_token_params)
+        check_token_response = check_token_request.json()
 
-        # Create a new version of the API access token secret
-        add_new_secret_version('marketing-bd-379302', 'linkedin_api_access_token', new_token)
+        # If token is not active, refresh token
+        if check_token_response['active'] != True:
+            refresh_url = 'https://www.linkedin.com/oauth/v2/accessToken'
+            refresh_headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+            refresh_params = {
+                'grant_type': 'refresh_token',
+                'refresh_token': return_secret('marketing-bd-379302, linkedin_api_refresh_token'),
+                'client_id': '864qixr6v91kph',
+                'client_secret': return_secret('marketing-bd-379302', 'linkedin_api_client_secret')
+            }
+            refresh_request = requests.post(refresh_url, headers=refresh_headers, data=refresh_params)
+            refresh_response = refresh_request.json()
+            new_token = refresh_response['access_token']
 
-        # Return new version of secret
-        return return_secret('marketing-bd-379302', 'linkedin_api_access_token')
+            # Create a new version of the API access token secret
+            add_new_secret_version('marketing-bd-379302', 'linkedin_api_access_token', new_token)
 
-    # Return current version of secret
-    return check_token_params["token"]
+            # Return new version of secret
+            return return_secret('marketing-bd-379302', 'linkedin_api_access_token')
+
+        # Return current version of secret
+        return check_token_params["token"]
+    elif platform == 'ig':
+        return return_secret('marketing-bd-379302', 'ig_access_token')
 
 
 # Get data from an API
-def get_from_api(url, headers, endpoint=None):
+def get_from_api(url, headers=None, endpoint=None):
     request = requests.get(url, headers=headers)
     json = request.json()
     if not endpoint == None:
