@@ -1,10 +1,23 @@
 import requests
 import pandas as pd
+from datetime import date, datetime, timedelta
+import calendar
 from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    url = "https://graph.facebook.com/v16.0/17841456374080288/insights?pretty=0&since=1680019200&until=1681228800&metric=impressions,reach,profile_views,email_contacts,get_directions_clicks,phone_call_clicks,text_message_clicks,website_clicks&period=day&access_token=EAANTIDDj7vQBAGBDrWnP96sf14dVvPmKkA4kpbiGg46JUpyQJWti7cnVMU3A4cGlE4WFsgQPiFZAUAhLz3EJ18ziRUP9GXOU7M1hlhaPIvBPjo61NyGGsB80g9IlEuEl2dnZBIB3NWIyaHMIZAtB9ZC31HXN5PhJPewRARrQHC2De8wFjwomPx582ioqZBlQCIPd2mPGo7zGcy0wnfS5qI74MKz7E6oQZD"
+    end_date = date.today()
+    start_date = date.today() - timedelta(1)
+    midnight_time = datetime.min.time()
+
+    end_datetime = datetime.combine(end_date, midnight_time)
+    start_datetime = datetime.combine(start_date, midnight_time)
+
+    time_range_start = '1680825600' # calendar.timegm(start_datetime.utctimetuple())
+    time_range_end = '1683504000' # calendar.timegm(end_datetime.utctimetuple())
+
+    access_token = return_active_token('ig')
+    url = "https://graph.facebook.com/v16.0/17841456374080288/insights?pretty=0&since={}&until={}&metric=impressions,reach,profile_views,email_contacts,get_directions_clicks,phone_call_clicks,text_message_clicks,website_clicks&period=day&access_token={}".format(time_range_start, time_range_end, access_token)
 
     request = requests.get(url)
     data = request.json()
