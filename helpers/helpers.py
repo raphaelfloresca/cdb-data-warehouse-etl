@@ -275,10 +275,13 @@ def get_all_social_metadata(chunked_social_metadata):
                         social_metadata_row.update({'appreciation_count': 0})
 
                 if key == 'commentSummary':
-                    social_metadata_row['comments_count'] = value['count']
-                    social_metadata_row['comments_top_level_count'] = value['topLevelCount']
+                    if 'count' in value:
+                      social_metadata_row['comments_count'] = value['count']
+                      social_metadata_row['comments_top_level_count'] = value['topLevelCount']
                 if key == "commentsState":
                     social_metadata_row['comments_state'] = value
+
+            print(value)
 
             social_metadata_list.append(social_metadata_row)
 

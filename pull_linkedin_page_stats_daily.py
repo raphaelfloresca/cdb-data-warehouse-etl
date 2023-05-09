@@ -1,16 +1,30 @@
 import pandas as pd
 from flatten_json import flatten
-from datetime import date
+from datetime import date, datetime, timedelta
+import calendar
 from helpers.helpers import *
 
 
 # Main entry point for the cloud function
 def pull_from_api(self):
+    end_date = date.today() - timedelta(3)
+    start_date = date.today() - timedelta(4)
+    midnight_time = datetime.min.time()
+
+    end_datetime = datetime.combine(end_date, midnight_time)
+    start_datetime = datetime.combine(start_date, midnight_time)
+
+    time_range_start = calendar.timegm(start_datetime.utctimetuple()) * 1000
+    time_range_end = calendar.timegm(end_datetime.utctimetuple()) * 1000
+
+    print(time_range_start)
+    print(time_range_end)
+
     # Fetch daily data from page statistics API
-    url = "https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start=1648425600000&timeIntervals.timeRange.end=1679875200000"
+    url = "https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={}&timeIntervals.timeRange.end={}".format(time_range_start, time_range_end)
 
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token()),
+        "Authorization": "Bearer {}".format(return_active_token("li")),
         'Linkedin-Version': '202302'
     }
 
@@ -188,6 +202,6 @@ def pull_from_api(self):
     df['time_range_end'] = pd.to_datetime(df['time_range_end'], unit='ms')
 
     # Write dataframe to csv
-    df.to_csv('linkedin_page_stats_daily.csv', encoding='utf-8')
+    df.to_csv('linkedin_page_stats_daily_2_days.csv', encoding='utf-8')
 
     return "Data has been saved"

@@ -9,12 +9,12 @@ def pull_from_api(self):
     all_shares_start_url = 'https://api.linkedin.com/v2/shares?q=owners&owners=urn:li:organization:30216658&sortBy=LAST_MODIFIED&sharesPerOwner=1000&start=0&count=50'
 
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token()),
+        "Authorization": "Bearer {}".format(return_active_token("li")),
         'Linkedin-Version': '202302'
     }
 
     x_restli_2_0_headers = {
-        "Authorization": "Bearer {}".format(return_active_token()),
+        "Authorization": "Bearer {}".format(return_active_token("li")),
         "X-Restli-Protocol-Version": "2.0.0",
         "Linkedin-Version": "202302"
     }
