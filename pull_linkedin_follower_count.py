@@ -8,6 +8,7 @@ def pull_from_api(self):
     # URL for follower count
     follower_count_url = 'https://api.linkedin.com/rest/networkSizes/urn:li:organization:30216658?edgeType=CompanyFollowedByMember'
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token()),
         'Linkedin-Version': '202302'

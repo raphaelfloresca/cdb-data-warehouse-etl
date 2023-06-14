@@ -5,14 +5,14 @@ from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    # Fetch daily data from page statistics API
+    # Fetch daily data from follower statistics API
     url = "https://api.linkedin.com/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:2414183&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start=1679911200000&timeIntervals.timeRange.end=1681812000000"
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token()),
         'Linkedin-Version': '202302'
     }
-
 
     # Get all data from API
     data = get_from_api(url, headers)
@@ -24,6 +24,7 @@ def pull_from_api(self):
     # Create dataframe
     df = pd.DataFrame(list(daily_data_flatten))
 
+    # Assign new column names
     old_col_names = ['followerGains_organicFollowerGain',
                      'followerGains_paidFollowerGain',
                      'organizationalEntity',
@@ -36,7 +37,6 @@ def pull_from_api(self):
                      'time_range_start',
                      'time_range_end']
 
-    # Assign new column names
     new_cols = dict(zip(old_col_names, new_col_names))
     df = df.rename(columns=new_cols)
 

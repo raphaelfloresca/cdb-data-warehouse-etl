@@ -8,13 +8,15 @@ def pull_from_api(self):
     # Fetch daily data from organization share API
     lifetime_share_url = "https://api.linkedin.com/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:30216658"
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token()),
         'Linkedin-Version': '202302'
     }
 
-    lifetime_share_request = requests.get(lifetime_share_url, headers=headers)
-    df = pd.json_normalize(lifetime_share_request.json()['elements'])
+    # Pull data
+    lifetime_shares_data = get_from_api(lifetime_share_url, headers, 'elements')
+    df = pd.json_normalize(lifetime_shares_data)
 
     # Get pull date
     df["pull_date"] = pd.to_datetime(date.today())
@@ -30,7 +32,6 @@ def pull_from_api(self):
             'totalShareStatistics.impressionCount',
             'totalShareStatistics.commentMentionsCount',
             'totalShareStatistics.commentCount']
-
     df = df[cols]
 
     # Rename columns

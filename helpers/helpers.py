@@ -3,6 +3,7 @@ import urllib.parse
 from google.cloud import secretmanager
 
 
+# Take metrics from IG posts and format into dictionary
 def format_data_dict(raw_data):
   data_dict = {}
 
@@ -12,6 +13,7 @@ def format_data_dict(raw_data):
   return data_dict
 
 
+# Take action breakdown metrics from IG posts and format into dictionary
 def format_action_breakdown_dict(raw_data):
   breakdown_dict = {'bio_link_clicked': 0, 'call': 0, 'direction': 0, 'email': 0, 'other': 0, 'text': 0}
 
@@ -21,6 +23,7 @@ def format_action_breakdown_dict(raw_data):
   return breakdown_dict
 
 
+# Take navigation breakdown metrics frrom IG posts and format into dictionary
 def format_navigation_breakdown_dict(raw_data):
   breakdown_dict = {'automatic_forward': 0, 'tap_back': 0, 'tap_exit': 0, 'tap_forward': 0, 'swipe_back': 0, 'swipe_down': 0, 'swipe_forward': 0, 'swipe_up': 0}
 
@@ -29,6 +32,8 @@ def format_navigation_breakdown_dict(raw_data):
 
   return breakdown_dict
 
+
+# Return secret from Secret Manager
 def return_secret(project_id, secret_id, version_id="latest"):
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
@@ -43,7 +48,7 @@ def return_secret(project_id, secret_id, version_id="latest"):
     return response.payload.data.decode('UTF-8')
 
 
-
+# Create a new secret version
 def add_new_secret_version(project_id, secret_id, payload):
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
@@ -69,6 +74,7 @@ def add_new_secret_version(project_id, secret_id, payload):
     )
 
 
+# Return active token, otherwise make a new one if expired (only for LinkedIn)
 def return_active_token(platform):
     if platform == 'li':
         # Check if the token is current
@@ -118,6 +124,7 @@ def get_from_api(url, headers=None, endpoint=None):
     return json
 
 
+# Get data from geo API (LinkedIn)
 def get_from_geo_api(url, headers, ids):
     id_list = list(ids)
     clean_ids = []
@@ -278,6 +285,8 @@ def get_all_social_metadata(chunked_social_metadata):
                     if 'count' in value:
                       social_metadata_row['comments_count'] = value['count']
                       social_metadata_row['comments_top_level_count'] = value['topLevelCount']
+                    else:
+                      continue
                 if key == "commentsState":
                     social_metadata_row['comments_state'] = value
 
@@ -315,7 +324,7 @@ def function_uri_to_en(data, uri):
             return item['name']['localized']['en_US']
 
 
-# Function to get readable country from country URI
+# Function to get readable region from region URI
 def region_uri_to_en(data, uri):
     glossary = data['elements']
 
@@ -333,7 +342,7 @@ def country_uri_to_en(data, uri):
             return item['name']['value']
 
 
-# Function to get readable country from country URI
+# Function to get readable geo from geo URI
 def geo_uri_to_en(data, uri):
     # print(uri)
     glossary = data['results']

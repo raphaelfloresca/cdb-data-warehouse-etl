@@ -7,14 +7,16 @@ from io import BytesIO
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    access_token = return_active_token('ig')
     # Pull list of posts
+    access_token = return_active_token('ig')
     url = "https://graph.facebook.com/v16.0/17841456374080288/stories?access_token={}".format(access_token)
     story_list = get_from_api(url, endpoint='data')
     story_list = [d['id'] for d in story_list]
 
+    # Initialize story list
     story_data = []
 
+    #
     for story in story_list:
         story_url = "https://graph.facebook.com/v16.0/{}?fields=timestamp,id,caption,media_url&access_token={}".format(story, access_token)
         story_metadata = get_from_api(story_url)

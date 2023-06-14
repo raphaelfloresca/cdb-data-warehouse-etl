@@ -5,10 +5,11 @@ from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    # URL for page stats and
+    # URLs for follower stats and industries
     follower_stats_url = 'https://api.linkedin.com/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:30216658'
     industry_url = 'https://api.linkedin.com/v2/industries/'
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token()),
         'Linkedin-Version': '202302'
@@ -48,7 +49,6 @@ def pull_from_api(self):
 
     # Assign new column names
     new_cols = dict(zip(old_col_names, new_col_names))
-
     df = df.rename(columns=new_cols)
 
     # Write dataframe to csv

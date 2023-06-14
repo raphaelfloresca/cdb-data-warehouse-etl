@@ -5,9 +5,10 @@ from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    # URL for page stats and
+    # URL for page stats
     page_stats_url = 'https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658'
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token()),
         'Linkedin-Version': '202302'

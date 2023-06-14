@@ -4,8 +4,8 @@ from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    access_token = return_active_token('ig')
     # Pull list of posts
+    access_token = return_active_token('ig')
     url = "https://graph.facebook.com/v16.0/17841456374080288/media?access_token={}".format(access_token)
     media_list = get_from_api(url, endpoint='data')
     media_list = [d['id'] for d in media_list]

@@ -8,11 +8,13 @@ def pull_from_api(self):
     # Start with first element
     all_shares_start_url = 'https://api.linkedin.com/v2/shares?q=owners&owners=urn:li:organization:30216658&sortBy=LAST_MODIFIED&sharesPerOwner=1000&start=0&count=50'
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token("li")),
         'Linkedin-Version': '202302'
     }
 
+    # Rest.li 2.0 headers
     x_restli_2_0_headers = {
         "Authorization": "Bearer {}".format(return_active_token("li")),
         "X-Restli-Protocol-Version": "2.0.0",
@@ -70,6 +72,7 @@ def pull_from_api(self):
     # All data pulled associated with the date of the API request - allows for partitioning laterr
     df_with_social_metadata["pull_date"] = pd.to_datetime(date.today())
 
+    # Reorder and rername columns
     cols = ['activity',
             'share',
             'pull_date',
@@ -88,7 +91,6 @@ def pull_from_api(self):
             'comments_top_level_count']
 
     df_with_social_metadata = df_with_social_metadata[cols]
-
     df_with_social_metadata = df_with_social_metadata.rename(columns={'lastModified_time': 'last_modified_time'})
 
     # Write dataframe to csv

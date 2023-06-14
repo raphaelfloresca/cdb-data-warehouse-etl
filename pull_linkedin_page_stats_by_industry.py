@@ -5,7 +5,7 @@ from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
-    # URL for page stats and
+    # URLs for page stats and industries
     page_stats_url = 'https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658'
     industry_url = 'https://api.linkedin.com/v2/industries/'
 

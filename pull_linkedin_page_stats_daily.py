@@ -7,6 +7,7 @@ from helpers.helpers import *
 
 # Main entry point for the cloud function
 def pull_from_api(self):
+    # Get start and end dates
     end_date = date.today() - timedelta(3)
     start_date = date.today() - timedelta(4)
     midnight_time = datetime.min.time()
@@ -17,12 +18,10 @@ def pull_from_api(self):
     time_range_start = calendar.timegm(start_datetime.utctimetuple()) * 1000
     time_range_end = calendar.timegm(end_datetime.utctimetuple()) * 1000
 
-    print(time_range_start)
-    print(time_range_end)
-
     # Fetch daily data from page statistics API
     url = "https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={}&timeIntervals.timeRange.end={}".format(time_range_start, time_range_end)
 
+    # Headers
     headers = {
         "Authorization": "Bearer {}".format(return_active_token("li")),
         'Linkedin-Version': '202302'
@@ -38,6 +37,24 @@ def pull_from_api(self):
     # Create dataframe
     df = pd.DataFrame(list(daily_data_flatten))
 
+
+    # # Initialize dataframe
+    # df = pd.DataFrame(data)
+    #
+    # # Get pull date
+    # df["pull_date"] = pd.to_datetime(date.today())
+    #
+    # # Reorder columns
+    # cols = ['pull_date',
+    #         'firstDegreeSize']
+    #
+    # df = df[cols]
+    #
+    # # Rename columns
+    # old_col_names = ['firstDegreeSize']
+    # new_col_names = ['follower_count']
+
+    # Assign new column names
     old_col_names = ['totalPageStatistics_clicks_mobileCustomButtonClickCounts_0_customButtonType',
                      'totalPageStatistics_clicks_mobileCustomButtonClickCounts_0_clicks',
                      'totalPageStatistics_clicks_careersPageClicks_careersPagePromoLinksClicks',
@@ -176,25 +193,7 @@ def pull_from_api(self):
                      'time_range_end',
                      'organization']
 
-    # # Initialize dataframe
-    # df = pd.DataFrame(data)
-    #
-    # # Get pull date
-    # df["pull_date"] = pd.to_datetime(date.today())
-    #
-    # # Reorder columns
-    # cols = ['pull_date',
-    #         'firstDegreeSize']
-    #
-    # df = df[cols]
-    #
-    # # Rename columns
-    # old_col_names = ['firstDegreeSize']
-    # new_col_names = ['follower_count']
-    #
-    # # Assign new column names
     new_cols = dict(zip(old_col_names, new_col_names))
-
     df = df.rename(columns=new_cols)
 
     # Convert last modified time to datetime format
