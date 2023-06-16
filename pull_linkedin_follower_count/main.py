@@ -34,8 +34,7 @@ def validate_http(request):
 
 
 '''
-function 2: This is where you put your own code, as long as the output is a
-pandas dataframe you can write it out however you want, here's an example:
+function 2: This is the code to pull data from the API and store it in a DataFrame
 '''
 
 
