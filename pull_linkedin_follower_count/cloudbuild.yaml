@@ -15,13 +15,9 @@ options:
 availableSecrets:
   secretManager:
   - versionName: projects/13410613811/secrets/linkedin_api_access_token/versions/latest
-    env: 'LI_API_ACCESS_TOKEN'
   secretManager:
   - versionName: projects/13410613811/secrets/ig_access_token/versions/latest
-    env: 'IG_API_ACCESS_TOKEN'
   secretManager:
   - versionName: projects/13410613811/secrets/linkedin_api_client_secret/versions/latest
-    env: 'LI_API_CLIENT_SECRET'
   secretManager:
   - versionName: projects/13410613811/secrets/linkedin_api_refresh_token/versions/latest
-    env: 'LI_API_REFRESH_TOKEN'
