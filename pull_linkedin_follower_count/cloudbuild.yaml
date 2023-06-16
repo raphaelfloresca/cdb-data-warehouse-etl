@@ -1,12 +1,12 @@
 steps:
   - name: python
-      entrypoint: python
-      args: ["-m", "pip", "install", "--upgrade", "pip"]
+    entrypoint: python
+    args: ["-m", "pip", "install", "--upgrade", "pip"]
   - name: python
-      entrypoint: python
-      args: ["-m", "pip", "install", "-m", "requirements.txt"]
+    entrypoint: python
+    args: ["-m", "pip", "install", "-m", "requirements.txt"]
   - name: python
-      entrypoint: python
-      args: ["-m", "pytest", "-v", "cov"]
+    entrypoint: python
+    args: ["-m", "pytest", "-v", "cov"]
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['functions', 'deploy', 'pull_linkedin_follower_count_cicd', '--trigger-http', '--runtime', 'python311', '--source', '--entry-point', 'validate_http']
