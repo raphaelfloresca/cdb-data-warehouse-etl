@@ -4,7 +4,7 @@ steps:
     args: ["-m", "pip", "install", "--upgrade", "pip"]
   - name: python
     entrypoint: python
-    args: ["-m", "pip", "install", "-m", "requirements.txt"]
+    args: ["-m", "pip", "install", "-r", "requirements.txt"]
   - name: python
     entrypoint: python
     args: ["-m", "pytest", "-v", "cov"]
