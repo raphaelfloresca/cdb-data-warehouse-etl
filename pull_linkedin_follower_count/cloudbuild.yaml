@@ -12,3 +12,16 @@ steps:
     args: ['functions', 'deploy', 'pull_linkedin_follower_count_cicd', '--trigger-http', '--runtime', 'python311', '--source', '--entry-point', 'validate_http']
 options:
   logging: CLOUD_LOGGING_ONLY
+availableSecrets:
+  secretManager:
+  - versionName: projects/13410613811/secrets/linkedin_api_access_token/versions/latest
+    env: 'LI_API_ACCESS_TOKEN'
+  secretManager:
+  - versionName: projects/13410613811/secrets/ig_access_token/versions/latest
+    env: 'IG_API_ACCESS_TOKEN'
+  secretManager:
+  - versionName: projects/13410613811/secrets/linkedin_api_client_secret/versions/latest
+    env: 'LI_API_CLIENT_SECRET'
+  secretManager:
+  - versionName: projects/13410613811/secrets/linkedin_api_refresh_token/versions/latest
+    env: 'LI_API_REFRESH_TOKEN'
