@@ -39,7 +39,7 @@ function 2: This is the code to pull data from the API and store it in a DataFra
 '''
 
 
-def get_api_data(self):
+def get_api_data():
 
     # URL for follower count
     endpoint = 'urn:li:organization:30216658?edgeType=CompanyFollowedByMember'
