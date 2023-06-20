@@ -35,7 +35,7 @@ def validate_http(request):
 
 
 '''
-function 2: This is the code to pull data from the API and store it in a DataFrame
+function 2: This is the code to pull data from the API and store it in a DataFrame for pulling
 '''
 
 
