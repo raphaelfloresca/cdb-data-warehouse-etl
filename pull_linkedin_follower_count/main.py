@@ -4,6 +4,7 @@ import json
 import requests
 import pandas_gbq
 import gcsfs
+import os
 from datetime import date
 # Add helpers folder to system path
 sys.path.append('..')
@@ -38,7 +39,7 @@ function 2: This is the code to pull data from the API and store it in a DataFra
 '''
 
 
-def get_api_data():
+def get_api_data(self):
 
     # URL for follower count
     endpoint = 'urn:li:organization:30216658?edgeType=CompanyFollowedByMember'
@@ -46,7 +47,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token('li')),
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN", "N/A")),
         'Linkedin-Version': '202302'
     }
 

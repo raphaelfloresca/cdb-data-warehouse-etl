@@ -94,9 +94,9 @@ def return_active_token(platform):
             refresh_headers = {'Content-Type': 'application/x-www-form-urlencoded'}
             refresh_params = {
                 'grant_type': 'refresh_token',
-                'refresh_token': return_secret('marketing-bd-379302, linkedin_api_refresh_token'),
+                'refresh_token': return_secret('marketing-bd-379302, linkedin_api_refresh_token', 'latest'),
                 'client_id': '864qixr6v91kph',
-                'client_secret': return_secret('marketing-bd-379302', 'linkedin_api_client_secret')
+                'client_secret': return_secret('marketing-bd-379302', 'linkedin_api_client_secret', 'latest')
             }
             refresh_request = requests.post(refresh_url, headers=refresh_headers, data=refresh_params)
             refresh_response = refresh_request.json()
@@ -106,7 +106,7 @@ def return_active_token(platform):
             add_new_secret_version('marketing-bd-379302', 'linkedin_api_access_token', new_token)
 
             # Return new version of secret
-            return return_secret('marketing-bd-379302', 'linkedin_api_access_token')
+            return return_secret('marketing-bd-379302', 'linkedin_api_access_token', 'latest')
 
         # Return current version of secret
         return check_token_params["token"]

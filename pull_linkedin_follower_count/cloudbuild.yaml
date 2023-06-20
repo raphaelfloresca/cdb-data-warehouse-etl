@@ -9,15 +9,10 @@ steps:
     entrypoint: python
     args: ["-m", "pytest", "-v", "--cov"]
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'pull_linkedin_follower_count_cicd', '--trigger-http', '--runtime', 'python311', '--source', '--entry-point', 'validate_http']
+    args: ['functions', 'deploy', 'pull_linkedin_follower_count_cicd', '--trigger-http', '--runtime', 'python311', '--source', '--entry-point', 'validate_http', '--set-secrets', 'TOKEN=projects/13410613811/secrets/linkedin_api_access_token:latest']
 options:
   logging: CLOUD_LOGGING_ONLY
 availableSecrets:
   secretManager:
   - versionName: projects/13410613811/secrets/linkedin_api_access_token/versions/latest
-  secretManager:
-  - versionName: projects/13410613811/secrets/ig_access_token/versions/latest
-  secretManager:
-  - versionName: projects/13410613811/secrets/linkedin_api_client_secret/versions/latest
-  secretManager:
-  - versionName: projects/13410613811/secrets/linkedin_api_refresh_token/versions/latest
+    env: 'TOKEN'
