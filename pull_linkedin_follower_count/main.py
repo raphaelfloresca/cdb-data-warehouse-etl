@@ -9,7 +9,7 @@ from datetime import date
 from google.cloud import bigquery
 # Add helpers folder to system path
 sys.path.append('..')
-from helpers.helpers import return_active_token, get_from_api, create_bq_table
+from helpers import return_active_token, get_from_api, create_bq_table
 
 
 '''
