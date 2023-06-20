@@ -1,6 +1,38 @@
 import requests
 import urllib.parse
 from google.cloud import secretmanager
+from google.cloud import bigquery
+import secrets
+import string
+
+
+# Create a random string (used for creating temp bq table)
+def generate_random_string():
+
+  # initializing size of string
+  N = 8
+
+  # using secrets.choice()
+  # generating random strings
+  res = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
+                for i in range(N))
+
+  return str(res)
+
+
+# Create bq table for staging
+def create_bq_table(schema):
+
+  # Construct a BigQuery client object.
+  client = bigquery.Client()
+
+  table_id = "marketing-bd-379302.marketing_staging.{}".format(generate_random_string())
+
+  table = bigquery.Table(table_id, schema=schema)
+  table = client.create_table(table)  # Make an API request.
+  print(
+      "Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id)
+  )
 
 
 # Take metrics from IG posts and format into dictionary

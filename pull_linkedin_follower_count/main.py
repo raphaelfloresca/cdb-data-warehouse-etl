@@ -8,7 +8,7 @@ import os
 from datetime import date
 # Add helpers folder to system path
 sys.path.append('..')
-from helpers.helpers import return_active_token, get_from_api
+from helpers.helpers import return_active_token, get_from_api, create_bq_table
 
 
 '''
@@ -92,6 +92,9 @@ function 4: This pulls the data to the staging database - used for testing
 
 
 def pull_to_staging():
+
+
+    create_bq_table()
     df = get_api_data()
     bq_load('linkedin_follower_count', df, 'marketing_staging')
 
