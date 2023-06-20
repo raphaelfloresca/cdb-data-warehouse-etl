@@ -15,5 +15,5 @@ options:
   logging: CLOUD_LOGGING_ONLY
 availableSecrets:
   secretManager:
-  - versionName: projects/13410613811/secrets/linkedin_api_access_token/versions/2
+  - versionName: projects/$PROJECT_ID/secrets/linkedin_api_access_token/versions/latest
     env: 'TOKEN'
