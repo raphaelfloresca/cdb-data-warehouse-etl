@@ -1,7 +1,9 @@
 import pandas as pd
 from datetime import date
 from google.cloud import bigquery
-from helpers import return_active_token, get_from_api, create_bq_table
+# Add helpers folder to system path
+sys.path.append('..')
+from helpers.helpers import return_active_token, get_from_api, create_bq_table
 
 
 '''
