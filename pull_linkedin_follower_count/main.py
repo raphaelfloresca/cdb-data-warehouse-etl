@@ -1,4 +1,10 @@
 import pandas as pd
+import sys
+import json
+import requests
+import pandas_gbq
+import gcsfs
+import os
 from datetime import date
 from google.cloud import bigquery
 # Add helpers folder to system path
@@ -42,7 +48,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token('li')),
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN", "N/A")),
         'Linkedin-Version': '202302'
     }
 
@@ -94,7 +100,7 @@ def pull_to_staging():
         bigquery.SchemaField("follower_count", "INTEGER", mode="REQUIRED"),
     ]
 
-    table = 'linkedin_follower_count_{}'.format(create_bq_table(schema))
+    table = create_bq_table(schema)
     df = get_api_data()
     bq_load(table, df, 'marketing_staging')
 
