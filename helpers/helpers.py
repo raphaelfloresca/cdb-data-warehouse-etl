@@ -34,7 +34,7 @@ def format_navigation_breakdown_dict(raw_data):
 
 
 # Return secret from Secret Manager
-def return_secret(project_id, secret_id, version_id="latest"):
+def return_secret(project_id, secret_id, version_id="2"):
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
 
