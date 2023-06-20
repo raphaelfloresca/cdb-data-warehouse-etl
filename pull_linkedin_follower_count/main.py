@@ -1,10 +1,4 @@
 import pandas as pd
-import sys
-import json
-import requests
-import pandas_gbq
-import gcsfs
-import os
 from datetime import date
 from google.cloud import bigquery
 from helpers import return_active_token, get_from_api, create_bq_table
@@ -46,7 +40,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(os.environ.get("TOKEN", "N/A")),
+        "Authorization": "Bearer {}".format(return_active_token('li')),
         'Linkedin-Version': '202302'
     }
 
@@ -98,7 +92,7 @@ def pull_to_staging():
         bigquery.SchemaField("follower_count", "INTEGER", mode="REQUIRED"),
     ]
 
-    table = create_bq_table(schema)
+    table = 'linkedin_follower_count_{}'.format(create_bq_table(schema))
     df = get_api_data()
     bq_load(table, df, 'marketing_staging')
 
