@@ -5,6 +5,7 @@ steps:
   - name: python
     entrypoint: python
     args: ["-m", "pip", "install", "-r", "requirements.txt", "--user"]
+    dir: 'pull_linkedin_follower_count'
   - name: python
     entrypoint: python
     args: ["-m", "pytest", "-v", "--cov"]
