@@ -33,7 +33,7 @@ def format_navigation_breakdown_dict(raw_data):
   return breakdown_dict
 
 
-# Return secret from Secret Manager
+# Return v2 secret from Secret Manager
 def return_secret(project_id, secret_id, version_id="2"):
     # Create the Secret Manager client.
     client = secretmanager.SecretManagerServiceClient()
