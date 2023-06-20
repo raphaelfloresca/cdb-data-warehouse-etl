@@ -35,11 +35,11 @@ def validate_http(request):
 
 
 '''
-function 2: This is the code to pull data from the API and store it in a DataFrame for pulling
+function 2: This is the code to pull data from the API and store it in a DataFrame
 '''
 
 
-def get_api_data():
+def get_api_data(self):
 
     # URL for follower count
     endpoint = 'urn:li:organization:30216658?edgeType=CompanyFollowedByMember'
@@ -47,7 +47,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token('li')),
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN", "N/A")),
         'Linkedin-Version': '202302'
     }
 
