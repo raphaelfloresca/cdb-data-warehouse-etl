@@ -6,6 +6,7 @@ import pandas_gbq
 import gcsfs
 import os
 from datetime import date
+from google.cloud import bigquery
 # Add helpers folder to system path
 sys.path.append('..')
 from helpers.helpers import return_active_token, get_from_api, create_bq_table
@@ -80,6 +81,7 @@ function 3: This pulls the data to the production database
 
 
 def pull_to_prod():
+
     df = get_api_data()
     bq_load('linkedin_follower_count', df, 'marketing')
 
@@ -93,10 +95,14 @@ function 4: This pulls the data to the staging database - used for testing
 
 def pull_to_staging():
 
+    schema = [
+        bigquery.SchemaField("pull_date", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("follower_count", "INTEGER", mode="REQUIRED"),
+    ]
 
-    create_bq_table()
+    table = create_bq_table(schema)
     df = get_api_data()
-    bq_load('linkedin_follower_count', df, 'marketing_staging')
+    bq_load(table, df, 'marketing_staging')
 
     return "Data has been loaded to BigQuery"
 

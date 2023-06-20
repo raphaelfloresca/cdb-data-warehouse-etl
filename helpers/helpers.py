@@ -26,13 +26,15 @@ def create_bq_table(schema):
   # Construct a BigQuery client object.
   client = bigquery.Client()
 
-  table_id = "marketing-bd-379302.marketing_staging.{}".format(generate_random_string())
+  table_name = generate_random_string()
+  table_id = "marketing-bd-379302.marketing_staging.{}".format(table_name)
 
   table = bigquery.Table(table_id, schema=schema)
   table = client.create_table(table)  # Make an API request.
   print(
       "Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id)
   )
+  return table_name
 
 
 # Take metrics from IG posts and format into dictionary
