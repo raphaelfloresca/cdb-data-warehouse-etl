@@ -6,10 +6,12 @@ import pandas_gbq
 import gcsfs
 import os
 from datetime import date
-from google.cloud import bigquery
+#from google.cloud import bigquery
+from dotenv import load_dotenv
 # Add helpers folder to system path
 sys.path.append('..')
-from helpers import return_active_token, get_from_api, create_bq_table
+#from helpers import return_active_token, get_from_api, create_bq_table
+from helpers import get_from_api
 
 
 '''
@@ -48,7 +50,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(os.environ.get("TOKEN", "N/A")),
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
         'Linkedin-Version': '202302'
     }
 
@@ -108,7 +110,22 @@ def pull_to_staging():
 
 
 '''
-function 5: This function just converts your pandas dataframe into a bigquery
+function 5: This pulls the data to a csv - used for testing
+'''
+
+
+def pull_to_csv():
+
+    load_dotenv()
+
+    df = get_api_data()
+    df.to_csv("test.csv")
+
+    return "Data has been saved"
+
+
+'''
+function 6: This function just converts your pandas dataframe into a bigquery
 table, you'll also need to designate the name and location of the table in the
 variable names below.
 '''
