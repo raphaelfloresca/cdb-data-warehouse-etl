@@ -1,4 +1,4 @@
-#+title: Facebook Token
+#+title: Facebook Tokengg
 
 #+begin_src restclient
 GET https://graph.facebook.com/v16.0/oauth/access_token?grant_type=fb_exchange_token&client_id=935822654435060&client_secret=544bd113d4bf54bdbdbade46ae2d77fb&fb_exchange_token=EAANTIDDj7vQBAP3PNByYA3fLTR1vkJKQVFVOZApzUEf7Dr6nPQWWmpRpGZCy2Jm5BYdq31BP3oa4GrX9awkI62RZATSyvZA8WO2QnGIDdZCwwssWZCdgWwM63xa91fDJsPuIZALIa2S80eOtgvl7fBcm1LHW74AZBX5w9cjWoFVU9WaKwkko69tgwGEkTaPaijBlOZCKk0FWeJWxBJgamkjYZC8yrlt4AKL2wZD
