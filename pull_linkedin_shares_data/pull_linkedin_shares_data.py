@@ -10,13 +10,13 @@ def pull_from_api(self):
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token("li")),
+        "Authorization": "Bearer AQUD5zgMVkj0OyKtTC_sg9WWQi0vkZ9CTN9hTZ3qBea3hYtICYbeLi82P6VV6QbvUJOyI2pUpJ5BtA4D3qOoj9n0oF5Gsyme6QJQgU3VgJQYrlUeBhg7eRdAUUFo8BoIjdL_CSf0I-IsPvcazM8YsC98FIrdCffAMxgmRx_vGO2y7XOhFqEQ8X4-q-sFjeigvL2-FCiYIq1HFaeqg-4qtWk_yyKRW8qNLLqghQbcD8gO_-7ZjraedsZ4Lxgj1x51S0Uii-YfS9OK8utwCdwl4GGpGjqme9TOjI23hjBpa_DC-ON7AwxcOYBS28N3DglxCZE5rzmnZC_4fIvSMU1dQ-kUFLkDKQ",
         'Linkedin-Version': '202302'
     }
 
     # Rest.li 2.0 headers
     x_restli_2_0_headers = {
-        "Authorization": "Bearer {}".format(return_active_token("li")),
+        "Authorization": "Bearer AQUD5zgMVkj0OyKtTC_sg9WWQi0vkZ9CTN9hTZ3qBea3hYtICYbeLi82P6VV6QbvUJOyI2pUpJ5BtA4D3qOoj9n0oF5Gsyme6QJQgU3VgJQYrlUeBhg7eRdAUUFo8BoIjdL_CSf0I-IsPvcazM8YsC98FIrdCffAMxgmRx_vGO2y7XOhFqEQ8X4-q-sFjeigvL2-FCiYIq1HFaeqg-4qtWk_yyKRW8qNLLqghQbcD8gO_-7ZjraedsZ4Lxgj1x51S0Uii-YfS9OK8utwCdwl4GGpGjqme9TOjI23hjBpa_DC-ON7AwxcOYBS28N3DglxCZE5rzmnZC_4fIvSMU1dQ-kUFLkDKQ",
         "X-Restli-Protocol-Version": "2.0.0",
         "Linkedin-Version": "202302"
     }
