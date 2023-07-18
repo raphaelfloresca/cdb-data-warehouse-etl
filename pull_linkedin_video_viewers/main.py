@@ -110,7 +110,7 @@ def pull_to_staging():
 
     schema = [
         bigquery.SchemaField("statisticsType", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("value", "INT", mode="REQUIRED"),
+        bigquery.SchemaField("value", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("entity", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("timeRange.start", "DATE", mode="REQUIRED"),
         bigquery.SchemaField("timeRange.end", "DATE", mode="REQUIRED"),
