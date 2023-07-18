@@ -112,11 +112,11 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("statisticsType", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("statistics_type", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("value", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("entity", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("timeRange.start", "DATE", mode="REQUIRED"),
-        bigquery.SchemaField("timeRange.end", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("time_range_start", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("time_range_end", "DATE", mode="REQUIRED"),
     ]
 
     table = create_bq_table(schema)
