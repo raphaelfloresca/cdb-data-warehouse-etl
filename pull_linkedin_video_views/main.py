@@ -99,7 +99,7 @@ function 3: This pulls the data to the production database
 def pull_to_prod():
 
     df = get_api_data()
-    bq_load('linkedin_follower_count', df, 'marketing')
+    bq_load('linkedin_video_views', df, 'marketing')
 
     return "Data has been loaded to BigQuery"
 
