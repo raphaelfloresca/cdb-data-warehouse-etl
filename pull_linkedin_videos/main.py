@@ -94,8 +94,8 @@ def pull_to_staging():
 
     schema = [
         bigquery.SchemaField("id", "DATE", mode="REQUIRED"),
-        bigquery.SchemaField("text", "INTEGER", mode="REQUIRED"),
-        bigquery.SchemaField("publish_time", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("text", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("publish_time", "DATETIME", mode="REQUIRED"),
         bigquery.SchemaField("url", "STRING", mode="REQUIRED"),
     ]
 
