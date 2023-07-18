@@ -69,6 +69,8 @@ def get_api_data():
 
     current_time = int(time.time() * 1000)
 
+    df = pd.DataFrame()
+
     for video in video_list:
         endpoint = "https://api.linkedin.com/rest/videoAnalytics?q=entity&entity={}&type=VIEWER&aggregation=DAY&timeRange.start={}&timeRange.end={}".format(str(video['video']), str(video['publish_time']), str(current_time))
         api_headers = {
@@ -77,13 +79,14 @@ def get_api_data():
         }
         video_analytics_request = requests.get(endpoint, headers=api_headers)
         video_analytics_data = video_analytics_request.json()
-        df = pd.json_normalize(video_analytics_data['elements'])
-        df['timeRange.start'] = pd.to_datetime(df['timeRange.start'], unit='ms')
-        df['timeRange.end'] = pd.to_datetime(df['timeRange.end'], unit='ms')
-        df.rename(columns={'statisticsType': 'statistics_type',
+        df_single = pd.json_normalize(video_analytics_data['elements'])
+        df_single['timeRange.start'] = pd.to_datetime(df_single['timeRange.start'], unit='ms')
+        df_single['timeRange.end'] = pd.to_datetime(df_single['timeRange.end'], unit='ms')
+        df_single.rename(columns={'statisticsType': 'statistics_type',
                            'timeRange.start': 'time_range_start',
                            'timeRange.end': 'time_range_end'},
                   inplace=True)
+        df = df.append(df_single)
 
     return df
 
@@ -109,11 +112,11 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("statistics_type", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("statisticsType", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("value", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("entity", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("time_range_start", "DATE", mode="REQUIRED"),
-        bigquery.SchemaField("time_range_end", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("timeRange.start", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("timeRange.end", "DATE", mode="REQUIRED"),
     ]
 
     table = create_bq_table(schema)
