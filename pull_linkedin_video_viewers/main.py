@@ -63,7 +63,7 @@ def get_api_data():
     for page in paged_data:
         for row in page['elements']:
             if row['specificContent']['com.linkedin.ugc.ShareContent']['shareMediaCategory'] == 'VIDEO':
-                row['video'] = row[id]
+                row['video'] = row['id']
                 row['publish_time'] = row['firstPublishedAt']
                 video_list.append(row)
 
