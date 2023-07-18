@@ -72,7 +72,7 @@ def get_api_data():
     df = pd.DataFrame()
 
     for video in video_list:
-        endpoint = "https://api.linkedin.com/rest/videoAnalytics?q=entity&entity={}&type=VIEWS&aggregation=DAY&timeRange.start={}&timeRange.end={}".format(str(video['video']), str(video['publish_time']), str(current_time))
+        endpoint = "https://api.linkedin.com/rest/videoAnalytics?q=entity&entity={}&type=VIDEO_VIEW&aggregation=DAY&timeRange.start={}&timeRange.end={}".format(str(video['video']), str(video['publish_time']), str(current_time))
         api_headers = {
             "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
             "LinkedIn-Version": "202302"
