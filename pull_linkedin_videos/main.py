@@ -93,7 +93,7 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("id", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("id", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("text", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("publish_time", "DATETIME", mode="REQUIRED"),
         bigquery.SchemaField("url", "STRING", mode="REQUIRED"),
