@@ -127,7 +127,7 @@ def pull_to_staging():
 
 
 '''
-function 5: This pulls the data to a csv - used for testing
+function 5: This pulls the data to a csv - used for testing purposes
 '''
 
 
