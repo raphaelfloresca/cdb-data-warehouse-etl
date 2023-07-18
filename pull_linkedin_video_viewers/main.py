@@ -86,7 +86,7 @@ def get_api_data():
                            'timeRange.start': 'time_range_start',
                            'timeRange.end': 'time_range_end'},
                   inplace=True)
-        df = df.append(df_single)
+        df = pd.concat([df, df_single], ignore_index=True)
 
     return df
 
