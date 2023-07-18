@@ -21,7 +21,7 @@ def transform_ugc(row):
     clean_dict['id'] = row_subset['id']
     clean_dict['text'] = row_subset['specificContent']['com.linkedin.ugc.ShareContent']['shareCommentary']['text']
     clean_dict['publish_time'] = row_subset['firstPublishedAt']
-    clean_dict['preview_post'] = row_subset['specificContent']['com.linkedin.ugc.ShareContent']['shareCommentary']['text']
+    clean_dict['url'] = 'https://linkedin.com/feed/update/{}'.format(row_subset['id'])
 
     return clean_dict
 

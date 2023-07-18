@@ -49,7 +49,7 @@ def get_api_data():
     # Pull start data
     ugc_endpoint = "https://api.linkedin.com/v2/ugcPosts?q=authors&count=10&sortBy=LAST_MODIFIED&authors=List(urn%3Ali%3Aorganization%3A30216658)"
     api_headers_2_0 = {
-        "Authorization": "Bearer AQUD5zgMVkj0OyKtTC_sg9WWQi0vkZ9CTN9hTZ3qBea3hYtICYbeLi82P6VV6QbvUJOyI2pUpJ5BtA4D3qOoj9n0oF5Gsyme6QJQgU3VgJQYrlUeBhg7eRdAUUFo8BoIjdL_CSf0I-IsPvcazM8YsC98FIrdCffAMxgmRx_vGO2y7XOhFqEQ8X4-q-sFjeigvL2-FCiYIq1HFaeqg-4qtWk_yyKRW8qNLLqghQbcD8gO_-7ZjraedsZ4Lxgj1x51S0Uii-YfS9OK8utwCdwl4GGpGjqme9TOjI23hjBpa_DC-ON7AwxcOYBS28N3DglxCZE5rzmnZC_4fIvSMU1dQ-kUFLkDKQ",
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
         "LinkedIn-Version": "202302",
         "X-Restli-Protocol-Version": "2.0.0"
     }
@@ -96,7 +96,7 @@ def pull_to_staging():
         bigquery.SchemaField("id", "DATE", mode="REQUIRED"),
         bigquery.SchemaField("text", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("publish_time", "INTEGER", mode="REQUIRED"),
-        bigquery.SchemaField("", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("url", "STRING", mode="REQUIRED"),
     ]
 
     table = create_bq_table(schema)
