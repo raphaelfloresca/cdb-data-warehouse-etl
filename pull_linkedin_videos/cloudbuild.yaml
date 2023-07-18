@@ -10,6 +10,7 @@ steps:
     entrypoint: python
     args: ["-m", "pytest", "-v", "--cov"]
     secretEnv: ['TOKEN']
+    dir: 'pull_linkedin_videos'
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['functions', 'deploy', 'pull_linkedin_videos_cicd', '--trigger-http', '--runtime', 'python311', '--entry-point', 'validate_http', '--set-secrets', 'TOKEN=projects/13410613811/secrets/linkedin_api_access_token:latest']
     dir: 'pull_linkedin_videos'
