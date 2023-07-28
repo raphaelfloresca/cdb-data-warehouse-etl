@@ -5,15 +5,15 @@ steps:
   - name: python
     entrypoint: python
     args: ["-m", "pip", "install", "-r", "requirements.txt", "--user"]
-    dir: 'pull_linkedin_shares_metrics'
+    dir: 'pull_linkedin_shares_data'
   - name: python
     entrypoint: python
     args: ["-m", "pytest", "-v", "--cov"]
     secretEnv: ['TOKEN']
-    dir: 'pull_linkedin_shares_metrics'
+    dir: 'pull_linkedin_shares_data'
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'pull_linkedin_shares_metrics_cicd', '--trigger-http', '--runtime', 'python311', '--entry-point', 'validate_http', '--memory', '2048MB', '--set-secrets', 'TOKEN=projects/13410613811/secrets/linkedin_api_access_token:latest']
-    dir: 'pull_linkedin_shares_metrics'
+    args: ['functions', 'deploy', 'pull_linkedin_shares_data_cicd', '--trigger-http', '--runtime', 'python311', '--entry-point', 'validate_http', '--timeout', '540s', '--memory', '2048MB', '--set-secrets', 'TOKEN=projects/13410613811/secrets/linkedin_api_access_token:latest']
+    dir: 'pull_linkedin_shares_data'
 options:
   logging: CLOUD_LOGGING_ONLY
 availableSecrets:
