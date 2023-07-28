@@ -102,7 +102,7 @@ def get_api_data():
                                      'likeCount': 0,
                                      'impressionCount': 0,
                                      'commentCount': 0,
-                                     'share': 'test'}
+                                     'share': str(share)}
             share_metrics_list.append(individual_share_dict)
 
     share_metrics_df = pd.DataFrame(share_metrics_list)
@@ -151,13 +151,13 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("uniqueImpressionsCount", "INTEGER", mode="NULLABLE"),
-        bigquery.SchemaField("shareCount", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("unique_impressions_count", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("share_count", "INTEGER", mode="NULLABLE"),
         bigquery.SchemaField("engagement", "FLOAT", mode="NULLABLE"),
-        bigquery.SchemaField("clickCount", "INTEGER", mode="NULLABLE"),
-        bigquery.SchemaField("likeCount", "INTEGER", mode="NULLABLE"),
-        bigquery.SchemaField("impressionCount", "INTEGER", mode="NULLABLE"),
-        bigquery.SchemaField("commentCount", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("click_count", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("like_count", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("impression_count", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("comment_count", "INTEGER", mode="NULLABLE"),
         bigquery.SchemaField("share", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("pull_date", "DATE", mode="NULLABLE"),
     ]
