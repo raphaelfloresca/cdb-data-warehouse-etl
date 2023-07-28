@@ -137,9 +137,6 @@ def get_api_data():
     df_with_social_metadata = df_with_social_metadata[cols]
     df_with_social_metadata = df_with_social_metadata.rename(columns={'lastModified_time': 'last_modified_time'})
 
-    # Write dataframe to csv
-    df_with_social_metadata.to_csv('linkedin_social_metadata_shares.csv', encoding='utf-8')
-
     return df_with_social_metadata
 
 
