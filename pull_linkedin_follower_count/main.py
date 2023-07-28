@@ -6,12 +6,8 @@ import pandas_gbq
 import gcsfs
 import os
 from datetime import date
-#from google.cloud import bigquery
-from dotenv import load_dotenv
-# Add helpers folder to system path
-sys.path.append('..')
-#from helpers import return_active_token, get_from_api, create_bq_table
-from helpers import get_from_api
+from google.cloud import bigquery
+from helpers import return_active_token, get_from_api, create_bq_table
 
 
 '''
@@ -85,7 +81,7 @@ function 3: This pulls the data to the production database
 def pull_to_prod():
 
     df = get_api_data()
-    bq_load('linkedin_follower_count', df, 'marketing')
+    bq_load('linkedin_follower_count', df, 'cdb_marketing_data')
 
     return "Data has been loaded to BigQuery"
 
