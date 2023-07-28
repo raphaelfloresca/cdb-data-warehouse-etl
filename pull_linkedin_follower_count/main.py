@@ -112,8 +112,6 @@ function 5: This pulls the data to a csv - used for testing
 
 def pull_to_csv():
 
-    load_dotenv()
-
     df = get_api_data()
     df.to_csv("test.csv")
 
