@@ -81,12 +81,12 @@ def get_api_data():
     df['created_time'] = pd.to_datetime(df['created_time'], unit='ms')
 
     # Get share IDs from activity IDs
-    share_list = pd.Series(get_share_list(df, headers), name='share')
+    share_list = get_share_list(df, headers)
 
     # Create a list of share metrics
     share_metrics_list = []
 
-    for share in share_list['share']:
+    for share in share_list:
         share_url = 'https://api.linkedin.com/rest/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:30216658&shares={}'.format(str(share))
         individual_share_data = get_from_api(share_url, headers)
         try:
