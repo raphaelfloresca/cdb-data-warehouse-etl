@@ -102,18 +102,6 @@ def get_api_data():
     df['time_range_start'] = pd.to_datetime(df['time_range_start'], unit='ms')
     df['time_range_end'] = pd.to_datetime(df['time_range_end'], unit='ms')
 
-    # Write dataframe to csv
-    df.to_csv('linkedin_share_stats_daily.csv', encoding='utf-8')
-
-    return "Data has been saved"
-
-    new_cols = dict(zip(old_col_names, new_col_names))
-    df = df.rename(columns=new_cols)
-
-    # Convert last modified time to datetime format
-    df['time_range_start'] = pd.to_datetime(df['time_range_start'], unit='ms')
-    df['time_range_end'] = pd.to_datetime(df['time_range_end'], unit='ms')
-
     return df
 
 
