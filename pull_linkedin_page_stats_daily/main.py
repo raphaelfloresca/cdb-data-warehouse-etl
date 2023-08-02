@@ -58,7 +58,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token("li")),
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
         'Linkedin-Version': '202302'
     }
 
