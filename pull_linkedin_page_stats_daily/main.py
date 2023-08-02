@@ -242,7 +242,7 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("mobile_custom_button_click_counts_0_custom_button_type", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_custom_button_click_counts_0_custom_button_type", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("mobile_custom_button_click_counts_0_clicks", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("careers_page_clicks_careers_page_promo_links_clicks", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("careers_page_clicks_careers_page_banner_promo_clicks", "INTEGER", mode="REQUIRED"),
