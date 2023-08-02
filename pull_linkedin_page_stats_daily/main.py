@@ -1,12 +1,47 @@
 import pandas as pd
+import sys
+import json
+import requests
+import pandas_gbq
+import gcsfs
+import os
+from datetime import date
+from google.cloud import bigquery
+from helpers import return_active_token, get_from_api, create_bq_table
 from flatten_json import flatten
 from datetime import date, datetime, timedelta
 import calendar
-from helpers.helpers import *
 
 
-# Main entry point for the cloud function
-def pull_from_api(self):
+'''
+function 1: All this function is doing is responding and validating any HTTP
+request, this is important if you want to schedule an automatic refresh or test
+the function locally.
+'''
+
+
+def validate_http(request):
+
+    request_json = request.get_json(silent=True)
+    request_args = request.args
+
+    if request_json and request_args:
+        pull_to_prod()
+        return f'Data pull complete'
+    elif request_json and request_args:
+        pull_to_prod()
+        return f'Data pull complete'
+    else:
+        pull_to_prod()
+        return f'Data pull complete'
+
+
+'''
+function 2: This is the code to pull data from the API and store it in a DataFrame
+'''
+
+def get_api_data():
+
     # Get start and end dates
     end_date = date.today() - timedelta(3)
     start_date = date.today() - timedelta(4)
@@ -36,23 +71,6 @@ def pull_from_api(self):
 
     # Create dataframe
     df = pd.DataFrame(list(daily_data_flatten))
-
-
-    # # Initialize dataframe
-    # df = pd.DataFrame(data)
-    #
-    # # Get pull date
-    # df["pull_date"] = pd.to_datetime(date.today())
-    #
-    # # Reorder columns
-    # cols = ['pull_date',
-    #         'firstDegreeSize']
-    #
-    # df = df[cols]
-    #
-    # # Rename columns
-    # old_col_names = ['firstDegreeSize']
-    # new_col_names = ['follower_count']
 
     # Assign new column names
     old_col_names = ['totalPageStatistics_clicks_mobileCustomButtonClickCounts_0_customButtonType',
@@ -200,7 +218,131 @@ def pull_from_api(self):
     df['time_range_start'] = pd.to_datetime(df['time_range_start'], unit='ms')
     df['time_range_end'] = pd.to_datetime(df['time_range_end'], unit='ms')
 
-    # Write dataframe to csv
-    df.to_csv('linkedin_page_stats_daily_2_days.csv', encoding='utf-8')
+    return df
+
+
+'''
+function 3: This pulls the data to the production database
+'''
+
+
+def pull_to_prod():
+
+    df = get_api_data()
+    bq_load('linkedin_page_stats_daily', df, 'cdb_marketing_data')
+
+    return "Data has been loaded to BigQuery"
+
+
+'''
+function 4: This pulls the data to the staging database - used for testing
+'''
+
+
+def pull_to_staging():
+
+    schema = [
+        bigquery.SchemaField("mobile_custom_button_click_counts_0_custom_button_type", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_custom_button_click_counts_0_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("careers_page_clicks_careers_page_promo_links_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("careers_page_clicks_careers_page_banner_promo_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("careers_page_clicks_careers_page_jobs_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("careers_page_clicks_careers_page_employees_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_custom_button_click_counts_0_custom_button_type", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_custom_button_click_counts_0_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_careers_page_clicks_careers_page_jobs_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_careers_page_clicks_careers_page_promo_links_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_careers_page_clicks_careers_page_employees_clicks", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_products_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_products_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("all_desktop_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("all_desktop_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("insights_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("insights_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_about_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_about_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("all_mobile_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("all_mobile_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_products_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_products_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("products_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("products_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("jobs_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("jobs_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("people_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("people_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("overview_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("overview_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_overview_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_overview_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("life_at_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("life_at_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_overview_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_overview_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_careers_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_careers_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("all_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("all_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_jobs_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_jobs_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("careers_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("careers_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_life_at_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_life_at_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_jobs_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_jobs_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_people_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_people_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("about_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("about_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_about_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_about_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_people_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_people_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_insights_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_insights_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_careers_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_careers_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_life_at_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("desktop_life_at_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_insights_page_views_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("mobile_insights_page_views_unique_page_views", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("time_range_start", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("time_range_end", "DATE", mode="REQUIRED"),
+        bigquery.SchemaField("organization", "STRING", mode="REQUIRED")
+    ]
+
+    table = create_bq_table(schema)
+    df = get_api_data()
+    bq_load(table, df, 'marketing_staging')
+
+    return "Data has been loaded to BigQuery"
+
+
+'''
+function 5: This pulls the data to a csv - used for testing
+'''
+
+
+def pull_to_csv():
+
+    df = get_api_data()
+    df.to_csv("test.csv")
 
     return "Data has been saved"
+
+
+'''
+function 6: This function just converts your pandas dataframe into a bigquery
+table, you'll also need to designate the name and location of the table in the
+variable names below.
+'''
+
+
+def bq_load(key, value, dataset_name):
+
+    project_name = 'marketing-bd-379302'
+    table_name = key
+
+    value.to_gbq(destination_table='{}.{}'.format(dataset_name, table_name),
+                 project_id=project_name, if_exists='append')
