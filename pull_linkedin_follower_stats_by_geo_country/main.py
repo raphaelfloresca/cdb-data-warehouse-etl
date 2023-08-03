@@ -45,8 +45,7 @@ function 2: This is the code to pull data from the API and store it in a DataFra
 
 def get_api_data():
 
-
-    # URLs for follower stats and geo
+    # URLs for follower stats and geos
     follower_stats_url = 'https://api.linkedin.com/rest/organizationalEntityFollowerStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:30216658'
     geo_url = 'https://api.linkedin.com/v2/geo?ids=List('
 
@@ -57,7 +56,7 @@ def get_api_data():
     }
 
 
-    # Rest.li headers fo geos
+    # Rest.li heades for geos
     x_restli_2_0_headers = {
         "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
         "X-Restli-Protocol-Version": "2.0.0",
@@ -69,7 +68,7 @@ def get_api_data():
     endpoint = follower_stats_data['elements'][0]
 
     # Fetch geo data only
-    geo_data = endpoint['followerCountsByGeo']
+    geo_data = endpoint['followerCountsByGeoCountry']
 
     # Convert into a dataframe
     df = pd.json_normalize(geo_data)
@@ -96,7 +95,6 @@ def get_api_data():
             'pull_date',
             'followerCounts.organicFollowerCount',
             'followerCounts.paidFollowerCount']
-
     df = df[cols]
 
     # Rename columns
@@ -121,7 +119,7 @@ function 3: This pulls the data to the production database
 def pull_to_prod():
 
     df = get_api_data()
-    bq_load('linkedin_follower_stats_by_geo', df, 'cdb_marketing_data')
+    bq_load('linkedin_follower_stats_by_geo_country', df, 'cdb_marketing_data')
 
     return "Data has been loaded to BigQuery"
 
