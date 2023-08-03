@@ -180,7 +180,6 @@ def pull_to_staging():
 
     schema = [
         bigquery.SchemaField("pull_date", "DATE", mode="REQUIRED"),
-        bigquery.SchemaField("follower_count", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("mobile_products_page_views", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("all_desktop_page_views", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("insights_page_views", "INTEGER", mode="REQUIRED"),
