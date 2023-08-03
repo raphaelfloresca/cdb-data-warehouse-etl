@@ -10,7 +10,6 @@ from google.cloud import bigquery
 from helpers import (return_active_token,
                      get_from_api,
                      create_bq_table,
-                     function_uri_to_en,
                      industry_uri_to_en)
 
 
@@ -50,7 +49,7 @@ def get_api_data():
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
+        "authorization": "bearer {}".format(os.environ.get("token")),
         'Linkedin-Version': '202302'
     }
 
