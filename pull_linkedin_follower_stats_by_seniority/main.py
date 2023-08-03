@@ -89,10 +89,7 @@ def get_api_data():
     new_cols = dict(zip(old_col_names, new_col_names))
     df = df.rename(columns=new_cols)
 
-    # Write dataframe to csv
-    df.to_csv('linkedin_follower_stats_seniority.csv', encoding='utf-8')
-
-    return "Data has been saved"
+    return df
 
 
 '''
@@ -103,7 +100,7 @@ function 3: This pulls the data to the production database
 def pull_to_prod():
 
     df = get_api_data()
-    bq_load('linkedin_follower_stats_by_geo', df, 'cdb_marketing_data')
+    bq_load('linkedin_follower_stats_by_seniority', df, 'cdb_marketing_data')
 
     return "Data has been loaded to BigQuery"
 
@@ -116,7 +113,7 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("geo", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("seniority", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("pull_date", "DATE", mode="REQUIRED"),
         bigquery.SchemaField("organic_follower_count", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("paid_follower_count", "INTEGER", mode="REQUIRED")
