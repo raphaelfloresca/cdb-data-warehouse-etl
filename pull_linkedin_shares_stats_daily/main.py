@@ -128,7 +128,7 @@ def pull_to_staging():
     schema = [
         bigquery.SchemaField("unique_impressions_count", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("share_count", "INTEGER", mode="REQUIRED"),
-        bigquery.SchemaField("engagement", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("engagement", "FLOAT", mode="REQUIRED"),
         bigquery.SchemaField("click_count", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("like_count", "INTEGER", mode="REQUIRED"),
         bigquery.SchemaField("impression_count", "INTEGER", mode="REQUIRED"),
