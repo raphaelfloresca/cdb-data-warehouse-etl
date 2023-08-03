@@ -113,10 +113,10 @@ function 4: This pulls the data to the staging database - used for testing
 def pull_to_staging():
 
     schema = [
-        bigquery.SchemaField("industry", "STRING", mode="REQUIRED"),
-        bigquery.SchemaField("pull_date", "DATE", mode="REQUIRED"),
-        bigquery.SchemaField("organic_follower_count", "INTEGER", mode="REQUIRED"),
-        bigquery.SchemaField("paid_follower_count", "INTEGER", mode="REQUIRED")
+        bigquery.SchemaField("industry", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("pull_date", "DATE", mode="NULLABLE"),
+        bigquery.SchemaField("organic_follower_count", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("paid_follower_count", "INTEGER", mode="NULLABLE")
     ]
 
     table = create_bq_table(schema)
