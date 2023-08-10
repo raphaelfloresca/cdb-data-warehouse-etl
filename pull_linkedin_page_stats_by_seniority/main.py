@@ -175,7 +175,7 @@ function 3: This pulls the data to the production database
 def pull_to_prod():
 
     df = get_api_data()
-    bq_load('linkedin_page_stats_by_region', df, 'cdb_marketing_data')
+    bq_load('linkedin_page_stats_by_seniority', df, 'cdb_marketing_data')
 
     return "Data has been loaded to BigQuery"
 
