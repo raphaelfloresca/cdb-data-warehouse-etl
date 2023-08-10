@@ -12,7 +12,7 @@ steps:
     secretEnv: ['TOKEN']
     dir: 'pull_linkedin_follower_stats_by_function'
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'pull_linkedin_follower_stats_by_function_cicd', '--trigger-http', '--runtime', 'python311', '--entry-point', 'validate_http', '--set-secrets', 'TOKEN=projects/13410613811/secrets/linkedin_api_access_token:latest']
+    args: ['functions', 'deploy', 'pull_linkedin_follower_stats_by_function_cicd', '--trigger-http', '--runtime', 'python311', '--entry-point', 'validate_http', '--timeout', '540s', '--memory', '512MB', '--set-secrets', 'TOKEN=projects/13410613811/secrets/linkedin_api_access_token:latest']
     dir: 'pull_linkedin_follower_stats_by_function'
 options:
   logging: CLOUD_LOGGING_ONLY
