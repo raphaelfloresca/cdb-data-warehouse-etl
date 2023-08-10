@@ -1,17 +1,54 @@
 import pandas as pd
+import sys
+import json
+import requests
+import pandas_gbq
+import gcsfs
+import os
 from datetime import date
-from helpers.helpers import *
+from google.cloud import bigquery
+from helpers import (return_active_token,
+                     get_from_api,
+                     create_bq_table,
+                     function_uri_to_en)
+
+'''
+function 1: All this function is doing is responding and validating any HTTP
+request, this is important if you want to schedule an automatic refresh or test
+the function locally.
+'''
 
 
-# Main entry point for the cloud function
-def pull_from_api(self):
+def validate_http(request):
+
+    request_json = request.get_json(silent=True)
+    request_args = request.args
+
+    if request_json and request_args:
+        pull_to_prod()
+        return f'Data pull complete'
+    elif request_json and request_args:
+        pull_to_prod()
+        return f'Data pull complete'
+    else:
+        pull_to_prod()
+        return f'Data pull complete'
+
+
+'''
+function 2: This is the code to pull data from the API and store it in a DataFrame
+'''
+
+
+def get_api_data():
+
     # URLs for page stats and function
     page_stats_url = 'https://api.linkedin.com/rest/organizationPageStatistics?q=organization&organization=urn:li:organization:30216658'
     function_url = 'https://api.linkedin.com/v2/functions/'
 
     # Headers
     headers = {
-        "Authorization": "Bearer {}".format(return_active_token()),
+        "Authorization": "Bearer {}".format(os.environ.get("TOKEN")),
         'Linkedin-Version': '202302'
     }
 
@@ -25,7 +62,7 @@ def pull_from_api(self):
 
     # Replace URI with readable name
     for function in function_data:
-        function['function'] = sen_uri_to_en(function_index, function['function'])
+        function['function'] = function_uri_to_en(function_index, function['function'])
 
     # Convert into a dataframe
     df = pd.json_normalize(function_data)
@@ -127,7 +164,92 @@ def pull_from_api(self):
     new_cols = dict(zip(old_col_names, new_col_names))
     df = df.rename(columns=new_cols)
 
-    # Write dataframe to csv
-    df.to_csv('linkedin_page_stats_function.csv', encoding='utf-8')
+    return df
+
+
+'''
+function 3: This pulls the data to the production database
+'''
+
+
+def pull_to_prod():
+
+    df = get_api_data()
+    bq_load('linkedin_page_stats_by_function', df, 'cdb_marketing_data')
+
+    return "Data has been loaded to BigQuery"
+
+
+'''
+function 4: This pulls the data to the staging database - used for testing
+'''
+
+
+def pull_to_staging():
+
+    schema = [
+        bigquery.SchemaField("function", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("pull_date", "DATE", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_products_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("all_desktop_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("insights_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_about_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("all_mobile_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("jobs_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("products_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_products_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("people_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("overview_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_overview_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("life_at_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_overview_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_careers_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("all_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_jobs_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("careers_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_life_at_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_jobs_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_people_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("about_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_about_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_people_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_insights_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_careers_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("desktop_life_at_page_views", "INTEGER", mode="NULLABLE"),
+        bigquery.SchemaField("mobile_insights_page_views", "INTEGER", mode="NULLABLE")
+    ]
+
+    table = create_bq_table(schema)
+    df = get_api_data()
+    bq_load(table, df, 'marketing_staging')
+
+    return "Data has been loaded to BigQuery"
+
+
+'''
+function 5: This pulls the data to a csv - used for testing
+'''
+
+
+def pull_to_csv():
+
+    df = get_api_data()
+    df.to_csv("test.csv")
 
     return "Data has been saved"
+
+
+'''
+function 6: This function just converts your pandas dataframe into a bigquery
+table, you'll also need to designate the name and location of the table in the
+variable names below.
+'''
+
+
+def bq_load(key, value, dataset_name):
+
+    project_name = 'marketing-bd-379302'
+    table_name = key
+
+    value.to_gbq(destination_table='{}.{}'.format(dataset_name, table_name),
+                 project_id=project_name, if_exists='append')
