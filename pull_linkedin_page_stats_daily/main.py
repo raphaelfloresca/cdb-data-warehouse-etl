@@ -11,6 +11,7 @@ from helpers import return_active_token, get_from_api, create_bq_table
 from flatten_json import flatten
 from datetime import date, datetime, timedelta
 import calendar
+from dotenv import load_dotenv
 
 
 '''
@@ -43,8 +44,8 @@ function 2: This is the code to pull data from the API and store it in a DataFra
 def get_api_data():
 
     # Get start and end dates
-    end_date = date.today() - timedelta(3)
-    start_date = date.today() - timedelta(4)
+    end_date = date.today() - timedelta(7)
+    start_date = date.today()
     midnight_time = datetime.min.time()
 
     end_datetime = datetime.combine(end_date, midnight_time)
