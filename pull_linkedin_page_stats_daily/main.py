@@ -15,6 +15,29 @@ from dotenv import load_dotenv
 
 
 '''
+function 0: Test function locally
+'''
+
+
+def validate_http_local(request):
+
+    request_json = request.get_json(silent=True)
+    request_args = request.args
+
+    load_dotenv()
+
+    if request_json and request_args:
+        pull_to_csv()
+        return f'Data pull complete'
+    elif request_json and request_args:
+        pull_to_csv()
+        return f'Data pull complete'
+    else:
+        pull_to_csv()
+        return f'Data pull complete'
+
+
+'''
 function 1: All this function is doing is responding and validating any HTTP
 request, this is important if you want to schedule an automatic refresh or test
 the function locally.
@@ -44,8 +67,8 @@ function 2: This is the code to pull data from the API and store it in a DataFra
 def get_api_data():
 
     # Get start and end dates
-    end_date = date.today() - timedelta(7)
-    start_date = date.today()
+    end_date = date.today()
+    start_date = date.today() - timedelta(2)
     midnight_time = datetime.min.time()
 
     end_datetime = datetime.combine(end_date, midnight_time)
@@ -65,6 +88,7 @@ def get_api_data():
 
     # Get all data from API
     data = get_from_api(url, headers)
+
     endpoint = data['elements']
 
     # Flatten json
@@ -218,6 +242,8 @@ def get_api_data():
     # Convert last modified time to datetime format
     df['time_range_start'] = pd.to_datetime(df['time_range_start'], unit='ms')
     df['time_range_end'] = pd.to_datetime(df['time_range_end'], unit='ms')
+
+    df.drop (index = 0, inplace= True)
 
     return df
 
